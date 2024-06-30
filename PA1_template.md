@@ -71,7 +71,7 @@ ggplot(data=avg_daily, aes(x= Interval, y= Steps)) +
             ylab("average number of steps taken") 
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-html/timeseries plot-1.png)<!-- -->
 
 # Find the interval with the maximum number of steps
 
@@ -86,7 +86,7 @@ max_interval <- avg_daily[max_steps,1]
 The interval with the maximum number of steps is `max_interval`\
 The maximum number of steps within the above interval is `max_steps`
 
-## Imputing missing values
+## Inputing missing values
 
 
 ``` r
@@ -150,14 +150,14 @@ complete_data$Day <- weekdays(complete_data$date)
 complete_data$Type_of_Day <- factor(complete_data$Day %in% weekdays,
                                     levels = c(FALSE, TRUE),
                                     labels = c("weekend", "weekday"))
+# Separate weekday and weekend activity data in 2 new variables 
+weekday_activity <- complete_data[complete_data$Type_of_Day == "weekday",]
+weekend_activity <- complete_data[complete_data$Type_of_Day == "weekend",]
 ```
 
 Using a panel plot to compare the activity patterns between weekdays and weekends 
 
 ``` r
-# Separate weekday and weekend activity data in 2 new variables 
-weekday_activity <- complete_data[complete_data$Type_of_Day == "weekday",]
-weekend_activity <- complete_data[complete_data$Type_of_Day == "weekend",]
 # Calculate the total number of steps for both weekdays and weekends 
 weekday_steps <- aggregate(x=list(Steps = weekday_activity$steps),
                            by = list(Type_of_Day = weekday_activity$Type_of_Day, 
@@ -169,7 +169,7 @@ weekend_steps <- aggregate(x=list(Steps = weekend_activity$steps),
                            FUN = "mean")
 # Make a new variable containing step data for both weekdays and weekends with intervals 
 day_steps <- rbind (weekday_steps, weekend_steps)
-# Create a 2 panel plot comparing the activity patterns for weekdays and weekends
+#Create a 2 panel plot comparing the activity patterns for weekdays and weekends
 ggplot(day_steps, aes(x = Interval, y = Steps)) + 
 geom_line() + 
 facet_grid(Type_of_Day ~ .) + 
@@ -179,4 +179,5 @@ ggtitle("Weekdays and weekends activity patterns")
 ```
 
 ![](PA1_template_files/figure-html/panel plot-1.png)<!-- -->
+
 From the above plot, it can be observed that weekends have overall higher average activity, but there is an significant peak in activity during the mornings in weekdays
