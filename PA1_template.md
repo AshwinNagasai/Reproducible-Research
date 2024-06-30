@@ -128,13 +128,18 @@ Step_mean <- mean(Step_total[,2], na.rm = TRUE)
 Step_median <- median(Step_total[,2], na.rm = TRUE)
 mean_difference <- Step_mean - mean_total
 median_difference <- Step_median - median_total
-# Create a histogram with the filled in data
+```
+
+Create a histogram with the filled in data
+
+
+``` r
 hist(Step_total$x, col = "green", breaks = 20,
      main = "Total number of steps taken each day (filled in data)",
      xlab = "Number of steps per day")
 ```
 
-![](PA1_template_files/figure-html/fill missing values-1.png)<!-- -->
+![](PA1_template_files/figure-html/new histogram-1.png)<!-- -->
 
 The new mean total number of steps taken per day is `Step_mean`\
 The new total number of steps taken per day is `Step_median` There was no difference in mean, but a `median_difference` change in median after filling the missing values.\
@@ -153,11 +158,6 @@ complete_data$Type_of_Day <- factor(complete_data$Day %in% weekdays,
 # Separate weekday and weekend activity data in 2 new variables 
 weekday_activity <- complete_data[complete_data$Type_of_Day == "weekday",]
 weekend_activity <- complete_data[complete_data$Type_of_Day == "weekend",]
-```
-
-Using a panel plot to compare the activity patterns between weekdays and weekends 
-
-``` r
 # Calculate the total number of steps for both weekdays and weekends 
 weekday_steps <- aggregate(x=list(Steps = weekday_activity$steps),
                            by = list(Type_of_Day = weekday_activity$Type_of_Day, 
@@ -169,6 +169,11 @@ weekend_steps <- aggregate(x=list(Steps = weekend_activity$steps),
                            FUN = "mean")
 # Make a new variable containing step data for both weekdays and weekends with intervals 
 day_steps <- rbind (weekday_steps, weekend_steps)
+```
+Using a panel plot to compare the activity patterns between weekdays and weekends 
+
+
+``` r
 #Create a 2 panel plot comparing the activity patterns for weekdays and weekends
 ggplot(day_steps, aes(x = Interval, y = Steps)) + 
 geom_line() + 
